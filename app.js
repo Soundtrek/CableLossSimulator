@@ -1,7 +1,7 @@
 import {DEFAULTS,DEFAULT_PAIRS,simulate} from "./physics.mjs";
 const $=id=>document.getElementById(id);
 const keys=["length","rho","mur","inductance","amp","phase","fmin","fmax","points"];
-const colors=["#218552","#c05621","#2563a6","#b83280","#9a6a0a","#bf3f4c","#16818a","#6846a5","#4f7d27","#a34f35"];
+const colors=["#16834a","#df581c","#2563eb","#9333ea"];
 let memory=[],active=[],lastError="",graphData=[];
 const pairs=structuredClone(DEFAULT_PAIRS);
 const numberField=(id)=>Number($(id).value);
@@ -19,6 +19,7 @@ function renderPairs(){
   const target=$("pairs");target.replaceChildren();
   for(let i=0;i<pairCount();i++){
     const pair=pairs[i],root=el("div","pair"),head=el("div","pair-head");
+    root.style.setProperty("--pair-color",colors[i]);
     head.append(el("span","pin",`${i+1}+ / ${i+1}−`));
     const state=el("label","pair-state"),toggle=el("input");toggle.type="checkbox";toggle.checked=pair.enabled;
     toggle.addEventListener("change",()=>{pair.enabled=toggle.checked;body.hidden=!pair.enabled;update();});
@@ -58,8 +59,8 @@ function renderStats(){
   }
 }
 function traces(){
-  return [...active.map((a,i)=>({label:`${i+1}+/${i+1}− ${a.label} · live`,samples:a.result.samples,color:colors[i],live:true})),
-    ...memory.map((m,i)=>({label:m.label,samples:m.samples,color:colors[4+i],live:false}))];
+  return [...active.map(a=>({label:`${a.id+1}+/${a.id+1}− ${a.label} · live`,samples:a.result.samples,color:colors[a.id],live:true})),
+    ...memory.map(m=>({label:m.label,samples:m.samples,color:m.color,live:false}))];
 }
 function renderLegend(){
   const node=$("legend");node.replaceChildren();
@@ -109,7 +110,7 @@ function showMemories(){
   const target=$("memories");target.replaceChildren();$("memory-count").textContent=`${memory.length} / 6`;
   if(!memory.length){target.append(el("p","empty","Capture a trace, change your cable settings, and compare the curves."));return;}
   memory.forEach((m,i)=>{
-    const row=el("div","memory-row"),sw=el("span","swatch");sw.style.background=colors[4+i];
+    const row=el("div","memory-row"),sw=el("span","swatch");sw.style.background=m.color;
     const info=el("div","memory-name",m.label);info.append(el("small",null,m.info));
     const button=el("button","remove","Remove");button.type="button";button.setAttribute("aria-label","Remove "+m.label);
     button.onclick=()=>{memory.splice(i,1);showMemories();update();};row.append(sw,info,button);target.append(row);
@@ -124,7 +125,7 @@ $("connector").addEventListener("change",()=>{renderPairs();update();});
 keys.forEach(k=>$(k).addEventListener("input",update));
 $("capture").addEventListener("click",()=>{
   if(!active.length||memory.length+active.length>6)return;
-  active.forEach(a=>memory.push({label:`Memory ${memory.length+1} · ${a.label}`,info:a.info,samples:a.result.samples.map(p=>({...p}))}));
+  active.forEach(a=>memory.push({label:`Memory ${memory.length+1} · ${a.label}`,info:a.info,color:colors[a.id],samples:a.result.samples.map(p=>({...p}))}));
   showMemories();update();
 });
 $("clear").addEventListener("click",()=>{memory=[];showMemories();update();});

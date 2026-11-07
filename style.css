@@ -62,9 +62,9 @@ input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rg
 input::placeholder { color: #9aa5b1; }
 .help { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 10px 0 0; }
 .pair-list { display: grid; gap: 10px; }
-.pair { border: 1px solid var(--border); border-radius: 11px; background: #fbfcfc; padding: 12px; }
+.pair { border: 1px solid var(--border); border-inline-start: 4px solid var(--pair-color); border-radius: 11px; background: #fbfcfc; padding: 12px; }
 .pair-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
-.pin { font-size: 12px; font-weight: 700; color: #1d6d45; }
+.pin { font-size: 12px; font-weight: 700; color: var(--pair-color); }
 .pair-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .pair-grid label { font-size: 10px; }
 .pair-grid .driver { grid-column: span 3; }
