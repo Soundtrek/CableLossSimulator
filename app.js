@@ -1,7 +1,7 @@
 import {DEFAULTS,DEFAULT_PAIRS,simulate} from "./physics.mjs";
 const $=id=>document.getElementById(id);
 const keys=["length","rho","mur","inductance","amp","phase","fmin","fmax","points"];
-const colors=["#49e6c6","#ffae65","#95b8ff","#ee83db","#f7df79","#f07880","#74dbec","#b6a4ee","#a2df8a","#e6a5a5"];
+const colors=["#218552","#c05621","#2563a6","#b83280","#9a6a0a","#bf3f4c","#16818a","#6846a5","#4f7d27","#a34f35"];
 let memory=[],active=[],lastError="",graphData=[];
 const pairs=structuredClone(DEFAULT_PAIRS);
 const numberField=(id)=>Number($(id).value);
@@ -83,14 +83,14 @@ function draw(){
   const x=f=>l+Math.log(f/fmin)/Math.log(fmax/fmin)*gw;
   ctx.font="11px system-ui";ctx.textBaseline="middle";ctx.lineWidth=1;
   for(let i=0;i<=5;i++){
-    const db=bottom+(top-bottom)*i/5,yy=y(db);ctx.strokeStyle="#244457";ctx.beginPath();ctx.moveTo(l,yy);ctx.lineTo(w-r,yy);ctx.stroke();
-    ctx.fillStyle="#89acba";ctx.textAlign="right";ctx.fillText(fixed(db,1),l-9,yy);
+    const db=bottom+(top-bottom)*i/5,yy=y(db);ctx.strokeStyle="#e4e9e8";ctx.beginPath();ctx.moveTo(l,yy);ctx.lineTo(w-r,yy);ctx.stroke();
+    ctx.fillStyle="#5b6776";ctx.textAlign="right";ctx.fillText(fixed(db,1),l-9,yy);
   }
   const ticks=[20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000].filter(f=>f>=fmin&&f<=fmax);
   for(const f of ticks){
     const xx=x(f);if(!Number.isFinite(xx))continue;
-    ctx.strokeStyle="#18384a";ctx.beginPath();ctx.moveTo(xx,t);ctx.lineTo(xx,h-b);ctx.stroke();
-    ctx.fillStyle="#89acba";ctx.textAlign="center";ctx.fillText(f>=1000?`${f/1000}k`:`${f}`,xx,h-17);
+    ctx.strokeStyle="#edf0ef";ctx.beginPath();ctx.moveTo(xx,t);ctx.lineTo(xx,h-b);ctx.stroke();
+    ctx.fillStyle="#5b6776";ctx.textAlign="center";ctx.fillText(f>=1000?`${f/1000}k`:`${f}`,xx,h-17);
   }
   ctx.save();ctx.beginPath();ctx.rect(l,t,gw,gh);ctx.clip();
   for(const trace of data){
