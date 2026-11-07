@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#091b2c">
+  <meta name="description" content="Free Crewfinder speaker cable-loss simulator with NL2, NL4 and NL8 circuits and trace comparison.">
+  <title>CableLossFinder | Crewfinder Tools</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="https://crewfinder.co.za" aria-label="Crewfinder homepage"><span class="brand-icon">CF</span><span>CREWFINDER <span class="brand-light">/ TOOLS</span></span></a>
+    <span class="free-tag">FREE AUDIO TOOL</span>
+  </header>
+  <main class="page">
+    <div class="intro"><div><p class="eyebrow">SYSTEM ENGINEERING / SIGNAL LOSS</p><h1>Cable<span>Loss</span>Finder</h1><p class="lead">Your cable. Your load. Your loss. Change any input and compare the simulated frequency response instantly.</p></div><div class="live-badge"><span class="dot"></span> LIVE SIMULATION</div></div>
+    <div class="layout">
+      <section class="controls panel" aria-label="Cable and speaker settings">
+        <div class="section-header"><h2>01 <span>Configure cable</span></h2><button id="reset" class="link-button" type="button">Reset defaults</button></div>
+        <div class="field-grid">
+          <label>Cable length <span>metres</span><input id="length" type="number" min="0.01" max="100000" step="any" value="40"></label>
+          <label>Connector <span>pin pairs</span><select id="connector"><option value="1">NL2 · 1 pair</option><option value="2" selected>NL4 · 2 pairs</option><option value="4">NL8 · 4 pairs</option></select></label>
+        </div>
+        <p class="help">Length is one-way. Resistance includes both conductors in each pair.</p>
+        <div class="section-header spaced"><h2>02 <span>Driver assignments</span></h2><span class="muted">Per pin pair</span></div>
+        <div id="pairs" class="pair-list"></div>
+        <details class="advanced"><summary>Advanced physics &amp; frequency settings <span>⌄</span></summary>
+          <div class="field-grid">
+            <label>Resistivity <span>Ω·m</span><input id="rho" type="number" min="1e-12" step="any" value="1.72e-8"></label>
+            <label>Relative permeability <span>μr</span><input id="mur" type="number" min="0.01" step="any" value="1"></label>
+            <label>Pair inductance <span>µH/m</span><input id="inductance" type="number" min="0" step="any" value="0.5"></label>
+            <label>Amplifier output Z <span>Ω</span><input id="amp" type="number" min="0" step="any" value="0"></label>
+            <label>Load phase <span>degrees</span><input id="phase" type="number" min="-89" max="89" step="any" value="0"></label>
+            <label>Min frequency <span>Hz</span><input id="fmin" type="number" min="1" step="any" value="20"></label>
+            <label>Max frequency <span>Hz</span><input id="fmax" type="number" min="2" step="any" value="20000"></label>
+            <label>Curve points <span>samples</span><input id="points" type="number" min="20" max="1000" step="1" value="241"></label>
+          </div>
+          <p class="help">Copper preset at room temperature; editable constants. Flat impedance magnitude and constant phase are simplifications. All values are simulations, not measurements.</p>
+        </details>
+      </section>
+      <section class="results">
+        <div class="panel graph-panel">
+          <div class="section-header"><div><p class="eyebrow">PINK NOISE / 20 Hz–20 kHz DEFAULT</p><h2>Frequency loss</h2></div><button id="capture" class="capture-button" type="button">＋ Capture trace</button></div>
+          <div id="error" class="error" role="alert" hidden></div>
+          <div class="graph-frame"><canvas id="chart" role="img" aria-label="Calculated cable attenuation versus frequency, with saved trace overlays"></canvas></div>
+          <div id="legend" class="legend" aria-label="Trace legend"></div>
+          <p class="help">Live curves update as you edit. Captures remain frozen. Negative dB represents attenuation relative to the amplifier's ideal voltage source.</p>
+        </div>
+        <div class="stat-grid" id="stats" aria-live="polite"></div>
+        <div class="panel memory-panel">
+          <div class="section-header"><h2>Trace memory <span id="memory-count" class="muted">0 / 6</span></h2><button id="clear" class="link-button" type="button">Clear all</button></div>
+          <div id="memories"><p class="empty">Capture a trace, change your cable settings, and compare the curves.</p></div>
+        </div>
+      </section>
+    </div>
+    <footer>Made for the live sound community by <a href="https://crewfinder.co.za">Crewfinder</a> · Prediction only, not a cable safety or connector wiring certification tool.</footer>
+  </main>
+</body>
+</html>
