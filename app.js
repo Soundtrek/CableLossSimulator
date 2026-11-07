@@ -79,13 +79,17 @@ function draw(){
   ctx.clearRect(0,0,w,h);
   const data=traces(),s=settings(),fmin=s.fmin>0?s.fmin:20,fmax=s.fmax>fmin?s.fmax:20000;
   const losses=data.flatMap(tr=>tr.samples.map(p=>p.db)).filter(Number.isFinite);
-  const bottom=Math.min(-1,Math.floor((Math.min(0,...losses)-0.3)/2)*2),top=Math.max(0,Math.ceil((Math.max(0,...losses)+0.3)/2)*2);
-  const y=db=>t+(top-db)/(top-bottom)*gh;
+  const minLoss=Math.min(-1,...losses),rawStep=Math.abs(minLoss)/5,magnitude=10**Math.floor(Math.log10(rawStep));
+  const normalizedStep=rawStep/magnitude,step=(normalizedStep<=1?1:normalizedStep<=2?2:normalizedStep<=5?5:10)*magnitude;
+  const bottom=-Math.ceil(Math.abs(minLoss)/step)*step;
+  const y=db=>t+(0-db)/(0-bottom)*gh;
   const x=f=>l+Math.log(f/fmin)/Math.log(fmax/fmin)*gw;
   ctx.font="11px system-ui";ctx.textBaseline="middle";ctx.lineWidth=1;
-  for(let i=0;i<=5;i++){
-    const db=bottom+(top-bottom)*i/5,yy=y(db);ctx.strokeStyle="#e4e9e8";ctx.beginPath();ctx.moveTo(l,yy);ctx.lineTo(w-r,yy);ctx.stroke();
-    ctx.fillStyle="#5b6776";ctx.textAlign="right";ctx.fillText(fixed(db,1),l-9,yy);
+  const tickCount=Math.round(Math.abs(bottom)/step);
+  for(let i=0;i<=tickCount;i++){
+    const db=i===0?0:-step*i,yy=y(db),label=db===0?"0":Number(db.toPrecision(6)).toString();
+    ctx.strokeStyle="#e4e9e8";ctx.beginPath();ctx.moveTo(l,yy);ctx.lineTo(w-r,yy);ctx.stroke();
+    ctx.fillStyle="#5b6776";ctx.textAlign="right";ctx.fillText(label,l-9,yy);
   }
   const ticks=[20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000].filter(f=>f>=fmin&&f<=fmax);
   for(const f of ticks){
