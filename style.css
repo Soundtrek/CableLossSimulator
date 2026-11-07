@@ -86,11 +86,22 @@ canvas { display: block; width: 100%; height: 100%; }
 .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .legend-item { font-size: 11px; color: #45515f; display: flex; align-items: center; gap: 6px; }
 .swatch { display: inline-block; width: 17px; height: 3px; border-radius: 2px; }
-.stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
-.stat { border: 1px solid var(--border); background: #fff; border-radius: 12px; padding: 14px; box-shadow: var(--shadow-card); }
-.stat .name { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-.stat .value { color: #18212b; font-weight: 750; font-size: 21px; letter-spacing: -.03em; }
-.stat .sub { font-size: 10px; color: var(--muted); margin-top: 5px; }
+.results-table-panel { margin: 12px 0; padding: 15px 18px; }
+.results-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.results-table th, .results-table td { padding: 11px 9px; }
+.results-table thead th { color: var(--muted); font-size: 10px; font-weight: 650; line-height: 1.35; text-align: right; vertical-align: bottom; }
+.results-table thead th:first-child { width: 34%; text-align: left; }
+.results-table thead th:nth-child(2) { width: 24%; }
+.results-table thead th:nth-child(3), .results-table thead th:nth-child(4) { width: 21%; }
+.results-table tbody tr + tr { border-top: 1px solid #edf0ef; }
+.results-table tbody th[scope="row"] { border-inline-start: 3px solid var(--pair-color); text-align: left; font-size: 12px; font-weight: 650; }
+.result-driver { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.result-color-dot { flex: 0 0 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--pair-color); }
+.result-driver-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-pin-pair { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; font-weight: 450; }
+.results-table tbody td { color: #18212b; font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.result-empty { padding: 16px 9px !important; color: var(--muted) !important; font-size: 12px !important; font-weight: 450 !important; text-align: left !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .memory-panel { margin-top: 0; }
 .memory-row { display: flex; align-items: center; gap: 12px; border-top: 1px solid #edf0ef; padding: 11px 0; }
 .memory-name { font-size: 12px; font-weight: 650; flex: 1; }
@@ -115,9 +126,16 @@ footer { padding: 24px 0 8px; text-align: center; color: var(--muted); font-size
   .live-badge { display: inline-block; margin-top: 11px; }
   .lead { font-size: 13px; }
   .panel { padding: 14px; }
-  .stat-grid { grid-template-columns: 1fr 1fr; }
-  .stat:last-child { grid-column: span 2; }
-  .stat .value { font-size: 19px; }
+  .results-table-panel { padding: 11px; }
+  .results-table, .results-table tbody { display: block; width: 100%; }
+  .results-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .results-table tbody { display: grid; gap: 8px; }
+  .results-table tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--border); border-inline-start: 3px solid var(--pair-color); border-radius: 10px; background: #fff; }
+  .results-table tbody tr + tr { border-top: 1px solid var(--border); }
+  .results-table tbody th[scope="row"] { grid-column: 1 / -1; border-inline-start: 0; border-bottom: 1px solid #edf0ef; padding: 9px 10px 8px; }
+  .results-table tbody td { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 5px; padding: 8px 7px 10px; font-size: 12px; text-align: left; }
+  .results-table tbody td::before { content: attr(data-label); color: var(--muted); font-size: 9px; font-weight: 500; line-height: 1.25; white-space: normal; }
+  .results-table tbody td.result-empty { grid-column: 1 / -1; }
   .graph-frame { height: 285px; }
   .section-header h2 { font-size: 15px; }
   .capture-button { font-size: 11px; padding: 8px 11px; white-space: nowrap; }

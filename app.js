@@ -46,16 +46,26 @@ function update(){
 const fixed=(n,d=2)=>Number.isFinite(n)?n.toFixed(d):"—";
 function renderStats(){
   const target=$("stats");target.replaceChildren();
-  if(!active.length){target.append(el("p","empty",lastError||"Enable a valid pair to calculate."));return;}
-  const values=[
-    ["Pink noise overall",a=>fixed(a.result.pinkDb)+" dB","Equal energy per octave"],
-    ["Loss at 1 kHz",a=>fixed(a.result.at1k)+" dB","Voltage attenuation"],
-    ["Loss at 20 kHz",a=>fixed(a.result.at20k)+" dB","Voltage attenuation"]
-  ];
-  for(const [name,fn,sub] of values){
-    const card=el("div","stat");
-    card.append(el("div","name",name+(active.length>1?" · Pair 1":"")),el("div","value",fn(active[0])),el("div","sub",sub));
-    target.append(card);
+  if(!active.length){
+    const row=el("tr"),cell=el("td","result-empty",lastError||"Enable a valid pair to calculate.");
+    cell.colSpan=4;row.append(cell);target.append(row);return;
+  }
+  for(const pair of active){
+    const row=el("tr");row.style.setProperty("--pair-color",colors[pair.id]);
+    const identity=el("th");identity.scope="row";
+    const driver=el("span","result-driver"),dot=el("span","result-color-dot");
+    const name=el("span","result-driver-name",pair.label);
+    name.append(el("small","result-pin-pair",`${pair.id+1}+ / ${pair.id+1}−`));
+    driver.append(dot,name);identity.append(driver);row.append(identity);
+    const values=[
+      ["Pink-noise overall loss (dB)",pair.result.pinkDb],
+      ["Loss at 1 kHz (dB)",pair.result.at1k],
+      ["Loss at 20 kHz (dB)",pair.result.at20k]
+    ];
+    for(const [label,value] of values){
+      const cell=el("td",null,fixed(value));cell.dataset.label=label;row.append(cell);
+    }
+    target.append(row);
   }
 }
 function traces(){

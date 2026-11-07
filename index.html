@@ -48,7 +48,13 @@
           <div id="legend" class="legend" aria-label="Trace legend"></div>
           <p class="help">Live curves update as you edit. Captures remain frozen. Negative dB represents attenuation relative to the amplifier's ideal voltage source.</p>
         </div>
-        <div class="stat-grid" id="stats" aria-live="polite"></div>
+        <div class="panel results-table-panel">
+          <table class="results-table">
+            <caption class="sr-only">Calculated cable loss for each active driver pair</caption>
+            <thead><tr><th scope="col">Driver / pin pair</th><th scope="col">Pink-noise overall loss (dB)</th><th scope="col">Loss at 1 kHz (dB)</th><th scope="col">Loss at 20 kHz (dB)</th></tr></thead>
+            <tbody id="stats" aria-live="polite"></tbody>
+          </table>
+        </div>
         <div class="panel memory-panel">
           <div class="section-header"><h2>Trace memory <span id="memory-count" class="muted">0 / 6</span></h2><button id="clear" class="link-button" type="button">Clear all</button></div>
           <div id="memories"><p class="empty">Capture a trace, change your cable settings, and compare the curves.</p></div>
